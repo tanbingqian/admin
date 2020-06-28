@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>支付</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="js/axios.min.js"></script>
+</head>
+<body>
+    <script>
+        var orderNo = GetQueryString('orderNo');
+        var type = GetQueryString('type')
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+        // 判断是充值还是订单支付
+        if (type === 'recharge') {
+            // 充值
+            let amount = GetQueryString('amount')
+            axios.post('/api/pay/account/recharge', {
+                amount: amount,
+                payType: 'ALIPAY',
+            }, {
+                headers: {
+                    'Authorization': "Bearer " + sessionStorage.token,
+                    'lang': localStorage.lang
+                }
+            }).then(res => {
+                if (res.data.state) {
+                    let content = res.data.data.content
+                    document.body.innerHTML = content
+                    document.forms[0].submit()
+                }
+            })
+        } else if (type === 'order') {
+            // 订单支付
+            axios.post('/api/order/order/DoPayOrder', {
+                orderNo: orderNo,
+                payType: 'ALIPAY',
+                returnUrl: ' '
+            }, {
+                headers: {
+                    'Authorization': "Bearer " + sessionStorage.token,
+                    'lang': localStorage.lang
+                }
+            }).then(res => {
+                if (res.data.state) {
+                    let content = res.data.data.content
+                    document.body.innerHTML = content
+                    document.forms[0].submit()
+                }
+            })
+        }
+        
+    </script>
+</body>
+</html>

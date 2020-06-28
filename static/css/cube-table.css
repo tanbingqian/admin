@@ -1,0 +1,38 @@
+.cube-template{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #ebebeb;
+}
+.cube-table{
+    position: relative;
+    height: 100%;
+}
+.cube-title-wrap{
+    height: 36px;
+    display: flex;
+    align-items: center;
+}
+.cube-title-wrap .module-title{
+    font-size: 15px;
+    color: #000;
+    flex-grow: 1;
+}
+.cube-title-wrap .see-more{
+    font-size: 12px;
+    color: #999;
+}
+.cube-table .cube-row{
+    overflow: hidden;
+}
+.cube-table .cube-row .cube-col{
+    float: left;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.cell-wrap{
+    box-sizing: border-box;
+}
+.cell-wrap.active{
+    color: #409EFF;
+}
